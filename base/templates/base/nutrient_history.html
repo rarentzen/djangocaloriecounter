@@ -1,0 +1,89 @@
+{% extends 'base/layout.html' %}
+
+{% block title %}Nutrient History{% endblock %}
+
+{% block content %}
+<h1>Nutrient History</h1>
+
+{% if user.is_authenticated %}
+    <!-- DATE SELECT FOR HISTORY OF FOODS EATEN ON THAT DATE -->
+<form action="" method="POST">
+    {% csrf_token %}
+    <input required type="date" name="input_date" id="input_date_id">
+    <input type="submit" value="Check">
+</form>
+
+    <!-- MAIN DISPLAY FOR FOOD TOTALS ON DATE SELECTED -->
+<div style="border: 1px solid #000; margin-top: 10px">
+    <h2>Selected Date : {{ selected_date }}</h2>
+    <h3>Total Calories : {{ date_total_Calories }}</h3>
+    <h3>Total Protein (g) : {{ date_total_Protein }}</h3>
+    <h3>Total Fat (g) : {{ date_total_Fat }}</h3>
+    <h3>Total Carbs (g) : {{ date_total_Carb }}</h3>
+</div>
+
+    <!-- NEXT 4 SECTIONS = BREAKFAST, LUNCH, DINNER, SNACKS ON DATE PROVIDED... -->
+<div class="breakfast" style="margin-top: 10px; border: solid 1px #000;">
+    {% if date_breakfasts %}
+    <h3>Breakfast</h3>
+    <ul>
+        {% for breakfast in date_breakfasts %}
+        <li>{{ breakfast.food.name }} | {{ breakfast.quantity }}g</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>No Breakfast</h3>
+    {% endif %}
+</div>
+
+
+<div class="Lunch" style="margin-top: 10px; border: solid 1px #000;">
+    {% if date_lunches %}
+    <h3>Lunch</h3>
+    <ul>
+        {% for lunch in date_lunches %}
+        <li>{{ lunch.food.name }} | {{ lunch.quantity }}g</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>No Lunch</h3>
+    {% endif %}
+</div>
+
+
+<div class="Dinner" style="margin-top: 10px; border: solid 1px #000;">
+    {% if date_dinners %}
+    <h3>Dinner</h3>
+    <ul>
+        {% for dinner in date_dinners %}
+        <li>{{ dinner.food.name }} | {{ dinner.quantity }}g</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>No Dinner</h3>
+    {% endif %}
+</div>
+
+
+<div class="Snacks" style="margin-top: 10px; border: solid 1px #000;">
+    {% if date_snacks %}
+    <h3>Snacks</h3>
+    <ul>
+        {% for snacks in date_snacks %}
+        <li>{{ snacks.food.name }} | {{ snacks.quantity }}g</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>No Snacks</h3>
+    {% endif %}
+</div>
+
+
+<!-- AUTH ELSE -->
+{% else %}
+<h4>You must login to show consumed foods</h4>
+
+<!-- AUTH END -->
+{% endif %}
+
+{% endblock %}

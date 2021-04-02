@@ -1,0 +1,154 @@
+{% extends 'base/layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+
+
+
+{% if user.is_authenticated %}
+
+<h1>Calorie Tracker</h1>
+    <div>Logged in as: <u>{{ user }}</u></div>
+
+    <form action="{% url 'consume_food' %}" method="POST">
+        {% csrf_token %}
+
+        <!-- DROPDOWN MENU FOR FOOD CATEGORY SELECTION -->
+        <label for="category_id">Category: </label>
+        <select name="food_category" id="category_id">
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Snacks">Snacks</option>
+        </select>
+
+        <!-- FOOD SELECTION AUTOCOMPLETE FORM -->
+        <label for="food_id">Food</label>
+        <input required type="text" name="food_name" id="food_id">
+        <!-- FOOD QUANTITY MUST BE ENTERED IN GRAMS -->
+        <label for="quantity_id">Quantity (in grams)</label>
+        <input required type="number" name="quantity" id="quantity_id">
+
+        <input type="submit" value="Add">
+
+    </form>
+
+    <!-- MAIN DISPLAY FOR DAILY FOOD TOTALS -->
+<div style="border: 1px solid #000; margin-top: 10px">
+    <h2><u>Today's Foods</u></h2>
+    <a href="{% url 'nutrient_history' %}">View Nutrition History</a>
+    <h3>Total Calories : {{ today_total_Calories }}</h3>
+    <h3>Total Protein (g) : {{ today_total_Protein }}</h3>
+    <h3>Total Fat (g) : {{ today_total_Fat }}</h3>
+    <h3>Total Carbs (g) : {{ today_total_Carb }}</h3>
+    <h3>Calories Remaining : {{ today_total_Calories_Remaining }}</h3>
+</div>
+
+<!-- BREAKFAST CATEGORY DISPLAY FOR CONSUMED FOODS  -->
+<div class="breakfast" style="margin-top: 10px; border: solid 1px #000;">
+    {% if today_breakfasts %}
+    <h3>Breakfast</h3>
+    <ul>
+        {% for breakfast in today_breakfasts %}
+        <li>{{ breakfast.food.name }} | {{ breakfast.quantity }}g</li>
+        <!-- DELETE BUTTON ADDED FOR ALL FOODS IN DAILY BREAKFAST CATEGORY -->
+        <form action="{% url 'delete_consumed_food' %}" method="post">
+        {% csrf_token %}
+            <button class = "btn btn-default" name="DeleteButton" value="{{ breakfast.food.name }}">Delete</button>
+            <input type="hidden" name="field" value="Breakfast"/>
+        </form>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>No Breakfast</h3>
+    {% endif %}
+</div>
+
+<!-- LUNCH CATEGORY DISPLAY FOR CONSUMED FOODS  -->
+<div class="Lunch" style="margin-top: 10px; border: solid 1px #000;">
+    {% if today_lunches %}
+    <h3>Lunch</h3>
+    <ul>
+        {% for lunch in today_lunches %}
+        <li>{{ lunch.food.name }} | {{ lunch.quantity }}g</li>
+        <!-- DELETE BUTTON ADDED FOR ALL FOODS IN DAILY LUNCH CATEGORY -->
+        <form action="{% url 'delete_consumed_food' %}" method="post">
+        {% csrf_token %}
+            <button class = "btn btn-default" name="DeleteButton" value="{{ lunch.food.name }}">Delete</button>
+            <input type="hidden" name="field" value="Lunch"/>
+        </form>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>No Lunch</h3>
+    {% endif %}
+</div>
+
+<!-- DINNER CATEGORY DISPLAY FOR CONSUMED FOODS  -->
+<div class="Dinner" style="margin-top: 10px; border: solid 1px #000;">
+    {% if today_dinners %}
+    <h3>Dinner</h3>
+    <ul>
+        {% for dinner in today_dinners %}
+        <li>{{ dinner.food.name }} | {{ dinner.quantity }}g</li>
+        <!-- DELETE BUTTON ADDED FOR ALL FOODS IN DAILY DINNER CATEGORY -->
+        <form action="{% url 'delete_consumed_food' %}" method="post">
+        {% csrf_token %}
+            <button class = "btn btn-default" name="DeleteButton" value="{{ dinner.food.name }}">Delete</button>
+            <input type="hidden" name="field" value="Dinner"/>
+        </form>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>No Dinner</h3>
+    {% endif %}
+</div>
+
+<!-- SNACKS CATEGORY DISPLAY FOR CONSUMED FOODS  -->
+<div class="Snacks" style="margin-top: 10px; border: solid 1px #000;">
+    {% if today_snacks %}
+    <h3>Snacks</h3>
+    <ul>
+        {% for snacks in today_snacks %}
+        <li>{{ snacks.food.name }} | {{ snacks.quantity }}g</li>
+        <!-- DELETE BUTTON ADDED FOR ALL FOODS IN DAILY LUNCH CATEGORY -->
+        <form action="{% url 'delete_consumed_food' %}" method="post">
+        {% csrf_token %}
+            <button class = "btn btn-default" name="DeleteButton" value="{{ snacks.food.name }}">Delete</button>
+            <input type="hidden" name="field" value="Snacks"/>
+        </form>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h3>No Snacks</h3>
+    {% endif %}
+</div>
+
+
+<!-- USER AUTH ELSE -->
+{% else %}
+<h4>Please log in to continue</h4>
+
+<!-- USER AUTH END -->
+{% endif %}
+
+{% endblock %}
+
+
+<!-- SCRIPTS -->
+{% block scripts %}
+    <!-- SCRIPT FOR AUTOCOMPLETE FUNCTION FOR SEARCHING FOOD DATABASE FOR FOOD NAME -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#food_id").autocomplete({
+                source: '{% url 'my_autocomplete' %}'
+            });
+        });
+    </script>
+
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base/layout.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+
+<h2>Register</h2>
+
+
+<!-- USER REGISTRATION FORM REQUIRES: USERNAME, EMAIL, PASSWORD, FIRSTNAME, LASTNAME, PASSWORD, PASSWORD CONFIRM -->
+<form action="{% url 'register' %}" method="POST">
+    {% csrf_token %}
+    <div>
+        <input required type="text" name="username" placeholder="Username">
+    </div>
+
+    <div>
+        <input required type="email" name="email" placeholder="email">
+    </div>
+
+    <div>
+        <input required name="first_name" type="text" id="first_name" placeholder="First Name" />
+    </div>
+
+    <div>
+        <input required name="last_name" type="text" id="last_name" placeholder="Last Name" />
+    </div>
+
+    <div>
+        <input required type="password" name="password" placeholder="Password">
+    </div>
+
+    <div class="form-group">
+        <input required type="password" name="confirmation" placeholder="Confirm Password">
+    </div>
+
+    <input type="submit" value="Register">
+</form>
+
+<!-- LINK TO LOGIN PAGE IF USER ALREADY REGISTERED -->
+Already Registered? <a href="{% url 'login' %}">Login Here</a>
+
+{% endblock %}

@@ -1,0 +1,91 @@
+<!-- BASE LAYOUT - LOAD STATIC CSS -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- HEADER/ LOAD BOOTSTRAP BASIC TEMPLATE-->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{% static 'my_food/main.css' %}">
+    <style>
+        div{
+            padding: 3px;
+        }
+    </style>
+</head>
+
+
+
+<body>
+
+<!-- NAVIGATION MENU -->
+<header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/">Calorie Counter</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{% url 'index' %}">Home</a>
+            </div>
+            <!-- RIGHT SIDE  -->
+            <div class="navbar-nav">
+            <!-- DIFFERENT DISPLAY DEPENDING ON WHETHER USER IS LOGGED IN OR NOT -->
+              {% if user.is_authenticated %}
+                  <a class="nav-item nav-link" href="{% url 'nutrient_history' %}">Nutrition History</a>
+                  <a class="nav-item nav-link" href="{% url 'logout_view' %}">Logout</a>
+              {% else %}
+                  <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                  <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+              {% endif %}
+            <!-- LINK TO ADMIN PAGE, SHOULD PROBABLY DELETE BEFORE LAUNCHING -->
+              <a class="nav-item nav-link" href="/admin">Admin</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+</header>
+
+
+<!-- MESSAGE DISPLAY FOR ANY MESSAGES -->
+<ul style="margin: 20px;">
+    {% for message in messages %}
+        <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+
+
+
+{% block content %}
+
+{% endblock %}
+
+<!-- SCRIPTS: SEARCH AUTOCOMPLETE FUNCTION AND BOOTSTRAP STUFF -->
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#food_id").autocomplete({
+                source: '{% url "my_autocomplete" %}'
+            });
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+{% endblock %}
+
+</body>
+
+</html>
