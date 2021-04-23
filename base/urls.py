@@ -12,5 +12,7 @@ urlpatterns = [
     path('consume_food/', views.consume_food, name='consume_food'),
     path('delete_consumed_food/', views.delete_consumed_food, name='delete_consumed_food'),
     path('nutrient_history/', views.nutrient_history, name='nutrient_history'),
+    path('help/', views.help, name='help'),
+
     
 ]

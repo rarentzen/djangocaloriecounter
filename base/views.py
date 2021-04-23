@@ -104,6 +104,9 @@ def logout_view(request):
     log_out(request)
     return render(request, "base/auth/logout.html")
 
+def help(request):
+    return render(request, "base/help.html")
+
 
 #user registration
 def register(request):
