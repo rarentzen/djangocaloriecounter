@@ -3,7 +3,7 @@
 import os
 import sys
 
-
+#DJANGO web app (Requirement 1.0.0)
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'my_food.settings')

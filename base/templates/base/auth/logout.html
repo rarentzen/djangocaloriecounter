@@ -4,6 +4,10 @@
 
 {% block content %}
 
+
+<!-- (Requirements 1.1.3) -->
+
+
 <div style="height: 500px !important; ">
     <h2>You have been logged out</h2>
 
@@ -11,20 +15,8 @@
     <div>{{ message }}</div>
     {% endif %}
 
-<!-- LOGOUT VIEW ALLOWS FOR USER TO LOG BACK IN -->
-    <h2>Login</h2>
-    <form action="{% url 'login' %}" method="POST">
-        {% csrf_token %}
-        <div>
-            <input autofocus type="text" name="username" placeholder="Username">
-        </div>
-        <div>
-            <input type="password" name="password" placeholder="Password">
-        </div>
-        <input type="submit" value="Login">
-    </form>
 
-    If you do not have an account, you can  <a href="{% url 'register' %}">Register Here</a>
-</div>
 
+Need to Login? <a class="text-success" href="{% url 'login' %}">Login Here</a>
 {% endblock %}
+

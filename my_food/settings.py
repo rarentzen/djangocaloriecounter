@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
+#DJANGO web app (Requirement 1.0.0)
+#BASE SETTINGS
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '2av(d$_#edb!=w53%-de@-2x$hf@gwbuqzs#)+m1wc(z_jv9re'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.herokuapp.com']
 
@@ -76,6 +80,11 @@ WSGI_APPLICATION = 'my_food.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+
+
+#Web app will use SQLite3 DB to store all food information imported from:
+#       my_food/MyFoodData-Nutrition-Facts-SpreadSheet-Release-1-4.csv
+#   (Requirement 1.1.0)
 
 DATABASES = {
     'default': {

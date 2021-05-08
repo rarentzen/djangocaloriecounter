@@ -3,18 +3,23 @@
 {% block title %}Nutrient History{% endblock %}
 
 {% block content %}
-<h1>Nutrient History</h1>
+
+<!-- NUTRITION HISTORY PAGE (Requirement 2.2.0 / 2.2.2) -->
+<h1 style="margin-left: 10px">Nutrient History</h1>
 
 {% if user.is_authenticated %}
     <!-- DATE SELECT FOR HISTORY OF FOODS EATEN ON THAT DATE -->
-<form action="" method="POST">
+
+<!-- Date search 2.2.1-->
+<form action="" method="POST" style="margin-left: 10px">
     {% csrf_token %}
     <input required type="date" name="input_date" id="input_date_id">
     <input type="submit" value="Check">
 </form>
 
+
     <!-- MAIN DISPLAY FOR FOOD TOTALS ON DATE SELECTED -->
-<div style="border: 1px solid #000; margin-top: 10px">
+<div class="shadow mt-4" style="border: 1px solid #000; margin-top: 10px; margin-right: 30px; margin-left: 10px">
     <h2>Selected Date : {{ selected_date }}</h2>
     <h3>Total Calories : {{ date_total_Calories }}</h3>
     <h3>Total Protein (g) : {{ date_total_Protein }}</h3>
@@ -23,7 +28,7 @@
 </div>
 
     <!-- NEXT 4 SECTIONS = BREAKFAST, LUNCH, DINNER, SNACKS ON DATE PROVIDED... -->
-<div class="breakfast" style="margin-top: 10px; border: solid 1px #000;">
+<div class="shadow mt-4" style="margin-top: 10px; margin-right: 30px; margin-left: 10px; border: solid 1px #000;">
     {% if date_breakfasts %}
     <h3>Breakfast</h3>
     <ul>
@@ -37,7 +42,7 @@
 </div>
 
 
-<div class="Lunch" style="margin-top: 10px; border: solid 1px #000;">
+<div class="shadow mt-4" style="margin-top: 10px; margin-right: 30px; margin-left: 10px; border: solid 1px #000;">
     {% if date_lunches %}
     <h3>Lunch</h3>
     <ul>
@@ -51,7 +56,7 @@
 </div>
 
 
-<div class="Dinner" style="margin-top: 10px; border: solid 1px #000;">
+<div class="shadow mt-4" style="margin-top: 10px; margin-right: 30px; margin-left: 10px; border: solid 1px #000;">
     {% if date_dinners %}
     <h3>Dinner</h3>
     <ul>
@@ -65,7 +70,7 @@
 </div>
 
 
-<div class="Snacks" style="margin-top: 10px; border: solid 1px #000;">
+<div class="shadow mt-4" style="margin-top: 10px; margin-right: 30px; margin-left: 10px; border: solid 1px #000;">
     {% if date_snacks %}
     <h3>Snacks</h3>
     <ul>
@@ -81,7 +86,7 @@
 
 <!-- AUTH ELSE -->
 {% else %}
-<h4>You must login to show consumed foods</h4>
+<h4 style="margin-left: 10px">You must login to show consumed foods</h4>
 
 <!-- AUTH END -->
 {% endif %}

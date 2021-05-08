@@ -20,9 +20,12 @@ def my_autocomplete(request):
     return JsonResponse([], safe=False)
 
 
-# homepage display
+# homepage display will be different depending on user auth status
+# (Requirements 1.2.0)
+
 def index(request):
     if request.user.is_authenticated:
+        # (Requirements 1.2.1)
         today_total_Calories = 0
         today_total_Protein = 0
         today_total_Fat = 0
@@ -64,6 +67,7 @@ def index(request):
         today_total_Carb = round(today_total_Carb, 2)
         today_total_Calories_Remaining = round(today_total_Calories_Remaining, 2)
 
+        # (Requirement 1.2.2)
         context = {
             'today_breakfasts': today_consumed_foods.filter(food_category='Breakfast'),
             'today_lunches': today_consumed_foods.filter(food_category='Lunch'),
@@ -80,7 +84,10 @@ def index(request):
         context={}
     return render(request, 'base/index.html', context)
 
-#user login
+
+
+
+# Login (Requirements 1.1.2)
 def login(request):
     if request.method == "POST":
 
@@ -100,15 +107,20 @@ def login(request):
         return render(request, "base/auth/login.html")
 
 
+#Logout (Requirements 1.1.2)
 def logout_view(request):
     log_out(request)
     return render(request, "base/auth/logout.html")
+
+
 
 def help(request):
     return render(request, "base/help.html")
 
 
-#user registration
+# user registration form to register for site
+# (Requirement 1.1.1)
+
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -140,7 +152,9 @@ def register(request):
 
 
 
-# this will create a consumed food from main page form for current user
+# this will create a consumed food from main page form for current user (ability to add food to journal)
+# (Requirement 2.0.0)
+
 def consume_food(request):
 
 
@@ -174,6 +188,7 @@ def consume_food(request):
                                                             food=food, quantity=quantity, date_time=datetime.today())
 
             consumed_food.save()
+            # Display message to page showing successful addition (Requirement 3.2.0)
             messages.success(request, f'Consumed {quantity}g of \"{food_name}\" on {consumed_food.date_time}')
             return HttpResponseRedirect(reverse('index'))
         except IntegrityError:
@@ -184,6 +199,8 @@ def consume_food(request):
 
 
 # this handles items that user wishes to delete
+# (Requirement 2.1.4)
+
 def delete_consumed_food(request):
 
     if request.method == 'POST':
@@ -198,6 +215,7 @@ def delete_consumed_food(request):
             consumed_food = ConsumedFood.objects.get(consumer=request.user, food_category=food_category,
                                                      food=food, date_time=datetime.today())
             consumed_food.delete()
+            #Display message to page showing successful delete (Requirement 3.2.0)
             messages.success(request, f' \"{food_name}\" was deleted successfully')
             return HttpResponseRedirect(reverse('index'))
         except IntegrityError:
@@ -210,6 +228,7 @@ def delete_consumed_food(request):
 
 
 #nutrition history saved after each day ends
+# (Requirement 2.2.0)
 def nutrient_history(request):
     if request.user.is_authenticated:
         input_date = request.POST.get('input_date')

@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+#these tell django 'where to look' when path is selected - points to views.py file to obtain view it needs to generate
 
 urlpatterns = [
 

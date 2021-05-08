@@ -1,12 +1,96 @@
 {% extends 'base/layout.html' %}
+{% load static %}
 {% block title %}Help{% endblock %}
 {% block content %}
 
+    <div class="container p-4">
+        <h1 style="color: black; text-align: center" >Welcome to Calorie Counter Help!</h1>
+             <br>
+            <div class="align-items-center">
+                      <img src="{% static 'images/home.png' %}" height="80%" width="80%"/>
+                </div>
+                    <br>
+                    <p class="font-weight-bold">In order to utilize all the abilities of the Calorie Counter application, you must login. <br>
+                        If you do not already have an account please select the “Register” link at the top-right of the page.</p>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
 
 
+   <div class="container p-4">
+            <div class="align-items-center">
+                <br>
+                    <h2 style="color: black">Logging in:</h2>
+                   <img src="{% static 'images/Login.png' %}" height="75%" width="75%"/>
+                </div>
+                    <p>Please enter your Username and Password. If you do not have an account already please select the “Register Here.”</p>
+                <br>
+                <br>
+                </div>
+            </div>
+        </div>
 
-    <h1>ADSASDASDADS</h1>
+   <div class="container p-4">
+            <div class="align-items-center">
+                <br>
+                    <h2 style="color: black">Registration:</h2>
+                       <img src="{% static 'images/Registration.png' %}" height="75%" width="75%" />
+                </div>
+                    <p>As you can see it is easy to register for a new account. <br>
+                        Simply fill out the required fields of Username, email, First Name, Last Name, Password and Confirm Password, and select the Register button.</p>
+                <br>
+                <br>
+                </div>
+            </div>
+        </div>
 
+   <div class="container p-4">
+            <div class="align-items-center">
+                <br>
+                    <h2 style="color: black">Calorie Tracker Interface:</h2>
+                       <img src="{% static 'images/calorie tracker.png' %}" height="75%" width="75%"/>
+                </div>
+                    <ul>
+                        <li>Here you can select from the drop-down Category menu either: Breakfast, Lunch, Dinner, or Snacks.</li>
+                        <li>The food input box allows you to input the food you wish to enter. This field has a search attribute with</li>
+                        <li>15,000 available foods, so it is easy to find an available food.</li>
+                        <li>The quantity input box allows you to add the quantity of food for your desired meal.</li>
+                        <li>Select the “Add” button once you have entered in the desired food and quantity.</li>
+                    </ul>
+                <br>
+                <br>
+                </div>
+            </div>
+        </div>
+
+   <div class="container p-4">
+            <div class="align-items-center">
+                <br>
+                    <h2 style="color: black">Nutrition History:</h2>
+                       <img src="{% static 'images/history.png' %}" height="75%" width="75%"/>
+                </div>
+                    <p>The nutrition history page can be found by selecting the nutrition history link from the top menu.<br>
+                        Once here you can view the history for a given day by entering the month, day, and year in mm/dd/yyyy format in the input box.</p>
+                <br>
+                <br>
+                </div>
+            </div>
+        </div>
+
+   <div class="container p-4">
+            <div class="align-items-center">
+                <br>
+                    <h2 style="color: black">Logging Out:</h2>
+                       <img src="{% static 'images/loggedout.png' %}" height="75%" width="75%"/>
+                </div>
+                    <p>Simply select Logout from the top menu and the application will log you out.</p>
+                <br>
+                <br>
+                </div>
+            </div>
+        </div>
 
 
 

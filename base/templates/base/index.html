@@ -1,138 +1,187 @@
 {% extends 'base/layout.html' %}
+{% load static %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
 
 
+<!-- If USER has account and is logged in, home page will be changed to show current days food journal -->
+<!-- (Requirements 1.1.1 && 1.1.2) -->
 
+    {% if user.is_authenticated %}
 
-{% if user.is_authenticated %}
+<h1 style="text-align: center; color: #333333; margin-top: 10px; margin-left: 10px; margin-right: 10px;"><u>Nutrition Tracker</u></h1>
 
-<h1>Calorie Tracker</h1>
-    <div>Logged in as: <u>{{ user }}</u></div>
+        <!-- Login Confirmation (Requirement 3.1.2) -->
+        <div style="text-align: center; margin-top: 1px; margin-left: 10px; margin-right: 10px;">Logged in as: <u>{{ user }}</u></div>
 
-    <form action="{% url 'consume_food' %}" method="POST">
-        {% csrf_token %}
+        <form action="{% url 'consume_food' %}" method="POST" style="text-align: center">
+            {% csrf_token %}
 
-        <!-- DROPDOWN MENU FOR FOOD CATEGORY SELECTION -->
-        <label for="category_id">Category: </label>
-        <select name="food_category" id="category_id">
-            <option value="Breakfast">Breakfast</option>
-            <option value="Lunch">Lunch</option>
-            <option value="Dinner">Dinner</option>
-            <option value="Snacks">Snacks</option>
-        </select>
+            <!-- DROPDOWN MENU FOR FOOD CATEGORY SELECTION # (Requirement 2.1.1)-->
+            <label for="category_id" style="margin-top: 50px; margin-left: 10px; margin-right: 10px">Category: </label>
+            <select name="food_category" id="category_id" style="width:175px; border: 1px solid #000;">
+                <option value="Breakfast">Breakfast</option>
+                <option value="Lunch">Lunch</option>
+                <option value="Dinner">Dinner</option>
+                <option value="Snacks">Snacks</option>
+            </select>
 
-        <!-- FOOD SELECTION AUTOCOMPLETE FORM -->
-        <label for="food_id">Food</label>
-        <input required type="text" name="food_name" id="food_id">
-        <!-- FOOD QUANTITY MUST BE ENTERED IN GRAMS -->
-        <label for="quantity_id">Quantity (in grams)</label>
-        <input required type="number" name="quantity" id="quantity_id">
+            <!-- FOOD SELECTION AUTOCOMPLETE FORM -->
+            <!-- Requirement 2.0.0. -->
 
-        <input type="submit" value="Add">
+            <!-- Requirement 2.1.0 -->
+            <label for="food_id">Food: </label>
+            <input required type="text" name="food_name" id="food_id" style="width:300px; border: 1px solid #000;">
 
-    </form>
+            <!-- FOOD QUANTITY MUST BE ENTERED IN GRAMS (Requirement 2.1.2)-->
+            <label for="quantity_id">Quantity (in grams): </label>
+            <input required type="number" name="quantity" id="quantity_id" style="width:100px; border: 1px solid #000;">
 
-    <!-- MAIN DISPLAY FOR DAILY FOOD TOTALS -->
-<div style="border: 1px solid #000; margin-top: 10px">
-    <h2><u>Today's Foods</u></h2>
-    <a href="{% url 'nutrient_history' %}">View Nutrition History</a>
-    <h3>Total Calories : {{ today_total_Calories }}</h3>
-    <h3>Total Protein (g) : {{ today_total_Protein }}</h3>
-    <h3>Total Fat (g) : {{ today_total_Fat }}</h3>
-    <h3>Total Carbs (g) : {{ today_total_Carb }}</h3>
-    <h3>Calories Remaining : {{ today_total_Calories_Remaining }}</h3>
-</div>
+            <input type="submit" value="Add"> <!-- (Requirement 2.1.1)-->
 
-<!-- BREAKFAST CATEGORY DISPLAY FOR CONSUMED FOODS  -->
-<div class="breakfast" style="margin-top: 10px; border: solid 1px #000;">
-    {% if today_breakfasts %}
-    <h3>Breakfast</h3>
-    <ul>
-        {% for breakfast in today_breakfasts %}
-        <li>{{ breakfast.food.name }} | {{ breakfast.quantity }}g</li>
-        <!-- DELETE BUTTON ADDED FOR ALL FOODS IN DAILY BREAKFAST CATEGORY -->
-        <form action="{% url 'delete_consumed_food' %}" method="post">
-        {% csrf_token %}
-            <button class = "btn btn-default" name="DeleteButton" value="{{ breakfast.food.name }}">Delete</button>
-            <input type="hidden" name="field" value="Breakfast"/>
         </form>
-        {% endfor %}
-    </ul>
+
+        <!-- MAIN DISPLAY FOR DAILY FOOD TOTALS -->
+        <!-- (Requirements 1.2.1) -->
+        <div class="shadow mt-4" style="border: 2px solid #000; margin-top: 10px;  margin-left: 10px; margin-right: 30px;">
+            <h2 style="color: #333333"><u>Today's Foods</u></h2>
+            <!-- Link to Nutrition History (Requirement 3.1.1) -->
+
+            <a href="{% url 'nutrient_history' %}"> <u>View Nutrition History</u> </a>
+            <h3 style="color: #333333">Total Calories : {{ today_total_Calories }}</h3>
+            <h3 style="color: #333333">Total Protein (g) : {{ today_total_Protein }}</h3>
+            <h3 style="color: #333333">Total Fat (g) : {{ today_total_Fat }}</h3>
+            <h3 style="color: #333333">Total Carbs (g) : {{ today_total_Carb }}</h3>
+            <h3 style="color: #333333">Calories Remaining : {{ today_total_Calories_Remaining }}</h3>
+        </div>
+
+        <!-- BREAKFAST CATEGORY DISPLAY FOR CONSUMED FOODS  -->
+        <div class="shadow mt-4" style="border: 2px solid #000; margin-top: 20px;  margin-left: 10px; margin-right: 30px;">
+            {% if today_breakfasts %}
+                <h3 style="color: #d0c716">Breakfast</h3>
+                <ul>
+                    {% for breakfast in today_breakfasts %}
+                        <li>{{ breakfast.food.name }} | {{ breakfast.quantity }}g</li>
+                        <!-- DELETE BUTTON ADDED FOR ALL FOODS IN DAILY BREAKFAST CATEGORY (Requirement 2.1.4) -->
+                        <form action="{% url 'delete_consumed_food' %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-default" name="DeleteButton" value="{{ breakfast.food.name }}">
+                                Delete
+                            </button>
+                            <input type="hidden" name="field" value="Breakfast"/>
+                        </form>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3 style="color: #d0c716">No Breakfast</h3>
+            {% endif %}
+        </div>
+
+        <!-- LUNCH CATEGORY DISPLAY FOR CONSUMED FOODS  -->
+        <div class="shadow mt-4" style="border: 2px solid #000; margin-top: 20px;  margin-left: 10px; margin-right: 30px;">
+            {% if today_lunches %}
+                <h3 style="color: #4be539">Lunch</h3>
+                <ul>
+                    {% for lunch in today_lunches %}
+                        <li>{{ lunch.food.name }} | {{ lunch.quantity }}g</li>
+                        <!-- DELETE BUTTON ADDED FOR ALL FOODS IN DAILY LUNCH CATEGORY (Requirement 2.1.4)-->
+                        <form action="{% url 'delete_consumed_food' %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-default" name="DeleteButton" value="{{ lunch.food.name }}">Delete
+                            </button>
+                            <input type="hidden" name="field" value="Lunch"/>
+                        </form>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3 style="color: #4be539">No Lunch</h3>
+            {% endif %}
+        </div>
+
+        <!-- DINNER CATEGORY DISPLAY FOR CONSUMED FOODS  -->
+        <div class="shadow mt-4" style="border: 2px solid #000; margin-top: 20px;  margin-left: 10px; margin-right: 30px;">
+            {% if today_dinners %}
+                <h3 style="color: #d624cd">Dinner</h3>
+                <ul>
+                    {% for dinner in today_dinners %}
+                        <li>{{ dinner.food.name }} | {{ dinner.quantity }}g</li>
+                        <!-- DELETE BUTTON ADDED FOR ALL FOODS IN DAILY DINNER CATEGORY (Requirement 2.1.4)-->
+                        <form action="{% url 'delete_consumed_food' %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-default" name="DeleteButton" value="{{ dinner.food.name }}">Delete
+                            </button>
+                            <input type="hidden" name="field" value="Dinner"/>
+                        </form>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3 style="color: #d624cd">No Dinner</h3>
+            {% endif %}
+        </div>
+
+        <!-- SNACKS CATEGORY DISPLAY FOR CONSUMED FOODS  -->
+        <div class="shadow mt-4" style="border: 2px solid #000; margin-top: 20px;  margin-left: 10px; margin-right: 30px; margin-bottom: 50px;">
+            {% if today_snacks %}
+                <h3 style="color: #3775ee">Snacks</h3>
+                <ul>
+                    {% for snacks in today_snacks %}
+                        <li>{{ snacks.food.name }} | {{ snacks.quantity }}g</li>
+                        <!-- DELETE BUTTON ADDED FOR ALL FOODS IN DAILY LUNCH CATEGORY (Requirement 2.1.4)-->
+                        <form action="{% url 'delete_consumed_food' %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-default" name="DeleteButton" value="{{ snacks.food.name }}">Delete
+                            </button>
+                            <input type="hidden" name="field" value="Snacks"/>
+                        </form>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h3 style="color: #3775ee">No Snacks</h3>
+            {% endif %}
+        </div>
+
+
+        <!-- USER AUTH ELSE -->
+
+<!-- USER must register an account before being allowed to access app.  If no account created the following
+ will be displayed (Requirement 1.1.1) -->
+
+
     {% else %}
-    <h3>No Breakfast</h3>
+        <div class="container p-5 text-left">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                    <div class="text-bg">
+                        <span class="display-4 ">Welcome To</span>
+                        <h1 class="display-2 text-success font-weight-bold"> Calorie Counter</h1>
+                        <p class="lead">Calorie Counter is your one stop shop for tracking all of your
+                        daily macro nutrient needs.</p>
+
+                        <h4 class="card-title">Please Log In to Continue</h4>
+                        <hr>
+                        <h6 class="card-subtitle text-muted mt-5">
+                            <a class="btn btn-success w-50" href="/login">Log In</a>
+                        </h6>
+                        If you do not have an account, you can <a class="text-success" href="{% url 'register' %}">Register
+                        Here</a>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                    <div class="images_box">
+                        <!-- Food images (requirement 3.3.0) -->
+                        <figure><img src="{% static 'images/meal.png' %}"></figure>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- USER AUTH END -->
     {% endif %}
-</div>
-
-<!-- LUNCH CATEGORY DISPLAY FOR CONSUMED FOODS  -->
-<div class="Lunch" style="margin-top: 10px; border: solid 1px #000;">
-    {% if today_lunches %}
-    <h3>Lunch</h3>
-    <ul>
-        {% for lunch in today_lunches %}
-        <li>{{ lunch.food.name }} | {{ lunch.quantity }}g</li>
-        <!-- DELETE BUTTON ADDED FOR ALL FOODS IN DAILY LUNCH CATEGORY -->
-        <form action="{% url 'delete_consumed_food' %}" method="post">
-        {% csrf_token %}
-            <button class = "btn btn-default" name="DeleteButton" value="{{ lunch.food.name }}">Delete</button>
-            <input type="hidden" name="field" value="Lunch"/>
-        </form>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <h3>No Lunch</h3>
-    {% endif %}
-</div>
-
-<!-- DINNER CATEGORY DISPLAY FOR CONSUMED FOODS  -->
-<div class="Dinner" style="margin-top: 10px; border: solid 1px #000;">
-    {% if today_dinners %}
-    <h3>Dinner</h3>
-    <ul>
-        {% for dinner in today_dinners %}
-        <li>{{ dinner.food.name }} | {{ dinner.quantity }}g</li>
-        <!-- DELETE BUTTON ADDED FOR ALL FOODS IN DAILY DINNER CATEGORY -->
-        <form action="{% url 'delete_consumed_food' %}" method="post">
-        {% csrf_token %}
-            <button class = "btn btn-default" name="DeleteButton" value="{{ dinner.food.name }}">Delete</button>
-            <input type="hidden" name="field" value="Dinner"/>
-        </form>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <h3>No Dinner</h3>
-    {% endif %}
-</div>
-
-<!-- SNACKS CATEGORY DISPLAY FOR CONSUMED FOODS  -->
-<div class="Snacks" style="margin-top: 10px; border: solid 1px #000;">
-    {% if today_snacks %}
-    <h3>Snacks</h3>
-    <ul>
-        {% for snacks in today_snacks %}
-        <li>{{ snacks.food.name }} | {{ snacks.quantity }}g</li>
-        <!-- DELETE BUTTON ADDED FOR ALL FOODS IN DAILY LUNCH CATEGORY -->
-        <form action="{% url 'delete_consumed_food' %}" method="post">
-        {% csrf_token %}
-            <button class = "btn btn-default" name="DeleteButton" value="{{ snacks.food.name }}">Delete</button>
-            <input type="hidden" name="field" value="Snacks"/>
-        </form>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <h3>No Snacks</h3>
-    {% endif %}
-</div>
-
-
-<!-- USER AUTH ELSE -->
-{% else %}
-<h4>Please log in to continue</h4>
-
-<!-- USER AUTH END -->
-{% endif %}
 
 {% endblock %}
 
@@ -140,6 +189,7 @@
 <!-- SCRIPTS -->
 {% block scripts %}
     <!-- SCRIPT FOR AUTOCOMPLETE FUNCTION FOR SEARCHING FOOD DATABASE FOR FOOD NAME -->
+    <!-- Requirement 2.1.0 -->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>

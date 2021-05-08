@@ -1,29 +1,54 @@
 {% extends "base/layout.html" %}
+{% load static %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
 
-<div style="height: 500px !important; ">
-    <h2>Login</h2>
+<!-- LOGIN (Requirements 1.1.2) -->
 
-    {% if message %}
-    <div>{{ message }}</div>
-    {% endif %}
+    <div class="text-center m-0 p-0">
+        <div class="row justify-content-between align-items-center p-0">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 p-0">
+                <div class="images_box fit-img">
+                    <!-- Food images (requirement 3.3.0) -->
+                    <figure><img src="{% static 'images/brocolli.png' %}"></figure>
+                </div>
+            </div>
+            <div class="col-md-4 mr-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h2 class="text-left">Login</h2>
+                        <hr>
 
-<!-- LOGIN FORM -->
-    <form action="{% url 'login' %}" method="POST">
-        {% csrf_token %}
-        <div>
-            <input autofocus type="text" name="username" placeholder="Username">
+                        {% if message %}
+                            <div class="alert alert-primary" role="alert">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        {% endif %}
+
+                        <!-- LOGIN FORM -->
+                        <!-- (Requirements 1.1.2) -->
+
+                        <form action="{% url 'login' %}" method="POST">
+                            {% csrf_token %}
+                            <div>
+                                <input autofocus type="text" name="username" class="form-control"
+                                       placeholder="Username">
+                            </div>
+                            <div>
+                                <input type="password" class="form-control" name="password" placeholder="Password">
+                            </div>
+                            <input type="submit" value="Login" class="btn btn-success btn-block">
+                        </form>
+                        <hr>
+                        <!-- Link to login if no account yet created for user (Requirements 3.2.1) -->
+                        If you do not have an account, you can <a class="text-success" href="{% url 'register' %}">Register
+                        Here</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            <input type="password" name="password" placeholder="Password">
-        </div>
-        <input type="submit" value="Login">
-    </form>
-
-    If you do not have an account, you can  <a href="{% url 'register' %}">Register Here</a>
-</div>
+    </div>
 
 {% endblock %}
